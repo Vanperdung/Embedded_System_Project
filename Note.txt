@@ -1,0 +1,43 @@
+Vẽ mạch
+	Nguồn: 5V 
+	LM35
+	ADS1115
+	LCD: 2004
+	4 nút nhấn
+	4 led
+	1 cổng uart
+	STM32F103C8T6
+	Còi?
+	
+	UART
+	GPIO
+	I2C: LCD + ADS1115
+Phân tích
+	Chu kỳ đo.
+	Ngưỡng cảnh báo: bằng led + lcd + còi?.
+	
+	1) Theo chu kỳ, với chu kỳ cài đặt được từ máy tính và phím bấm
+		UART-Hercules
+	2) Theo yêu cầu từ máy tính với từng thông số
+	
+	
+Chức năng nút nhấn	
+	Nút 1: Chu kỳ hoặc ngưỡng, giữ 5s ok
+	Nút 2: Tăng
+	Nút 3: Giảm
+	Nút 4: Đề phòng
+	
+Cảnh báo: Led sáng + Còi + LCD hiển thị.
+
+Màn hình LCD:
+
+	NHIET DO: xx C
+	CHU KY: y s // ấn nút 1 thì y nháy hoặc <-
+	NGUONG: zz C // ấn nút 1 hai lần thì zz nháy hoặc <-
+	CANH BAO!!!
+
+BAT/TAT canh bao bang nut nhan: bật thì vượt ngưỡng mới báo, tắt thì đéo báo
+	
+Bản tin
+	T,50
+	N,30
