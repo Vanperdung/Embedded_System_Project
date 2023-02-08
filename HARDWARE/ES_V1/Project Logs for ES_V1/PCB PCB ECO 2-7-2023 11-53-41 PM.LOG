@@ -1,0 +1,10 @@
+Removed Pin From Net: NetName=BUT0 Pin=IC1-37
+Removed Pin From Net: NetName=BUT1 Pin=IC1-38
+Removed Pin From Net: NetName=BUT2 Pin=IC1-39
+Removed Pin From Net: NetName=BUT3 Pin=IC1-40
+Added Pin To Net: NetName=BUT0 Pin=IC1-33
+Added Pin To Net: NetName=BUT1 Pin=IC1-34
+Added Pin To Net: NetName=BUT2 Pin=IC1-35
+Added Pin To Net: NetName=BUT3 Pin=IC1-36
+Added Member To Class: ClassName=SCHE Member=Component C21 100nF
+Added Room: Name=SCHE

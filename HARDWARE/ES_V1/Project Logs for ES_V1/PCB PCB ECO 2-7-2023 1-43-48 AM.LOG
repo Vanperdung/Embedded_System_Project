@@ -1,0 +1,5 @@
+Change Component Footprint: Designator=LED1 Old Footprint=LED-3 New Footprint=LED-0805-Blue
+Change Component Footprint: Designator=LED2 Old Footprint=LED-3 New Footprint=LED-0805-Green
+Change Component Footprint: Designator=LED3 Old Footprint=LED-3 New Footprint=LED-0805-Orange
+Change Component Footprint: Designator=LED4 Old Footprint=LED-3 New Footprint=LED-0805-Red
+Added Room: Name=SCHE

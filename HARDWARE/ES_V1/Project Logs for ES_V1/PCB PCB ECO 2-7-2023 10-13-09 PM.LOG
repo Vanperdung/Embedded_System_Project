@@ -1,0 +1,3 @@
+Added Pin To Net: NetName=SWDIO Pin=IC1-46
+Added Pin To Net: NetName=SWCLK Pin=IC1-49
+Added Room: Name=SCHE

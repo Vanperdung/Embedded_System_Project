@@ -1,0 +1,23 @@
+Removed Member From Class: ClassName=SCHE Member=LCD1
+Added Member To Class: ClassName=SCHE Member=Component C4 10uF
+Added Member To Class: ClassName=SCHE Member=Component C5 100nF
+Added Member To Class: ClassName=SCHE Member=Component C6 100nF
+Added Member To Class: ClassName=SCHE Member=Component C7 100nF
+Added Member To Class: ClassName=SCHE Member=Component C8 100nF
+Added Member To Class: ClassName=SCHE Member=Component C12 1uF
+Added Member To Class: ClassName=SCHE Member=Component C13 100nF
+Added Member To Class: ClassName=SCHE Member=Component C14 100nF
+Added Member To Class: ClassName=SCHE Member=Component C16 22pF
+Added Member To Class: ClassName=SCHE Member=Component C18 100nF
+Added Member To Class: ClassName=SCHE Member=Component LED1 LED
+Added Member To Class: ClassName=SCHE Member=Component LED3 LED
+Added Member To Class: ClassName=SCHE Member=Component R1 10k
+Added Member To Class: ClassName=SCHE Member=Component R5 10k
+Added Member To Class: ClassName=SCHE Member=Component R6 100k
+Added Member To Class: ClassName=SCHE Member=Component R7 10k
+Added Member To Class: ClassName=SCHE Member=Component R8 10k
+Added Member To Class: ClassName=SCHE Member=Component R9 1k
+Added Member To Class: ClassName=SCHE Member=Component R11 1k
+Added Member To Class: ClassName=SCHE Member=Component SW1 SW
+Added Member To Class: ClassName=SCHE Member=Component SW4 SW
+Added Member To Class: ClassName=SCHE Member=Component U3 LM35

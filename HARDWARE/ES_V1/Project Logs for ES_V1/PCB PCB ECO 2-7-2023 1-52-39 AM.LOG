@@ -1,0 +1,30 @@
+Added Component: Designator=IC1(STM32F103RCT6)
+Added Pin To Net: NetName=NetC16_2 Pin=IC1-5
+Added Pin To Net: NetName=NetC17_2 Pin=IC1-6
+Added Pin To Net: NetName=NetB1_1 Pin=IC1-7
+Added Pin To Net: NetName=GND Pin=IC1-12
+Added Pin To Net: NetName=+3.3V Pin=IC1-13
+Added Pin To Net: NetName=LM35_ADC1 Pin=IC1-15
+Added Pin To Net: NetName=GND Pin=IC1-18
+Added Pin To Net: NetName=+3.3V Pin=IC1-19
+Added Pin To Net: NetName=BUT0 Pin=IC1-21
+Added Pin To Net: NetName=BUT1 Pin=IC1-22
+Added Pin To Net: NetName=BUT2 Pin=IC1-23
+Added Pin To Net: NetName=BUT3 Pin=IC1-24
+Added Pin To Net: NetName=LED0 Pin=IC1-26
+Added Pin To Net: NetName=LED2 Pin=IC1-27
+Added Pin To Net: NetName=LED1 Pin=IC1-28
+Added Pin To Net: NetName=LED3 Pin=IC1-29
+Added Pin To Net: NetName=GND Pin=IC1-31
+Added Pin To Net: NetName=+3.3V Pin=IC1-32
+Added Pin To Net: NetName=CH340_RXD Pin=IC1-42
+Added Pin To Net: NetName=CH340_TXD Pin=IC1-43
+Added Pin To Net: NetName=GND Pin=IC1-47
+Added Pin To Net: NetName=+3.3V Pin=IC1-48
+Added Pin To Net: NetName=SCL Pin=IC1-58
+Added Pin To Net: NetName=SDA Pin=IC1-59
+Added Pin To Net: NetName=NetIC1_60 Pin=IC1-60
+Added Pin To Net: NetName=GND Pin=IC1-63
+Added Pin To Net: NetName=+3.3V Pin=IC1-64
+Added Member To Class: ClassName=SCHE Member=Component IC1 STM32F103RCT6
+Added Room: Name=SCHE

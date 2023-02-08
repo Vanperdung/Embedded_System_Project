@@ -1,0 +1,13 @@
+Change Component Designator: OldDesignator=C21 NewDesignator=C22
+Change Component Designator: OldDesignator=C22 NewDesignator=C23
+Added Component: Designator=C21(CAP_0805)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "17-Jul-2002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "Re-released for DXP Platform."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageReference"; Value = "RAD-0.3"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "33p"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=C21-1
+Added Pin To Net: NetName=+3.3V Pin=C21-2
+Added Member To Class: ClassName=SCHE Member=Component C23 100nF
+Added Room: Name=SCHE

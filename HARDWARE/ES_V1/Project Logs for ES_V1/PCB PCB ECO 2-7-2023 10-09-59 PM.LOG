@@ -1,0 +1,11 @@
+Added Pin To Net: NetName=+3.3V Pin=C20-1
+Added Pin To Net: NetName=GND Pin=C20-2
+Added Pin To Net: NetName=SWCLK Pin=C20-4
+Added Net: Name=SWCLK
+Added Pin To Net: NetName=SWDIO Pin=C20-3
+Added Net: Name=SWDIO
+Added Member To Class: ClassName=SCHE Member=Component C20 JP4
+Added Member To Class: ClassName=SCHE Member=Component R6 10k
+Added Member To Class: ClassName=SCHE Member=Component R8 10k
+Added Member To Class: ClassName=SCHE Member=Component R10 1k
+Added Member To Class: ClassName=SCHE Member=Component R12 1k
