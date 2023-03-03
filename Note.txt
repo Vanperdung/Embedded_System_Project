@@ -22,10 +22,10 @@ Phân tích
 	
 	
 Chức năng nút nhấn	
-	Nút 1: Chu kỳ hoặc ngưỡng, giữ 5s ok
+	Nút 1: Vào trang Config và Back.
 	Nút 2: Tăng
 	Nút 3: Giảm
-	Nút 4: Đề phòng
+	Nút 4: Chọn Config ngưỡng hoặc chu kỳ, nhấn 1 lần nữa là chốt config
 	
 Cảnh báo: Led sáng + Còi + LCD hiển thị.
 
@@ -39,5 +39,13 @@ Màn hình LCD:
 BAT/TAT canh bao bang nut nhan: bật thì vượt ngưỡng mới báo, tắt thì đéo báo
 	
 Bản tin
-	T,50
-	N,30
+	$,P,50,*
+	$,T,30,*
+Màn hình LCD:
+	Page 1:
+		STM32: xxoC
+		ADS1115: xxoC
+	Page 2:
+		T: xxS      <-
+		N: xxoC
+	

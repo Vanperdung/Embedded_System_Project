@@ -316,3 +316,17 @@ arm-none-eabi-size   ES.elf
   57464	    600	  11456	  69520	  10f90	ES.elf
 Finished building: default.size.stdout
  
+18:16:51 **** Incremental Build of configuration Debug for project ES ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/freertos.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xE -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3 -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/freertos.d" -MT"Core/Src/freertos.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/freertos.o"
+arm-none-eabi-gcc -o "ES.elf" @"objects.list"   -mcpu=cortex-m3 -T"D:\Embedded_System_Project\FIRMWARE\ES\STM32F103RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ES.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ES.elf
+ 
+arm-none-eabi-size   ES.elf 
+arm-none-eabi-objdump -h -S  ES.elf  > "ES.list"
+   text	   data	    bss	    dec	    hex	filename
+  56952	    600	  11456	  69008	  10d90	ES.elf
+Finished building: default.size.stdout
+ 
+Finished building: ES.list
+ 
