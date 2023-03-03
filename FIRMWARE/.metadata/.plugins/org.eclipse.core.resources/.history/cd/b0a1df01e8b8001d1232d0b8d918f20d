@@ -1,0 +1,232 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * File Name          : freertos.c
+  * Description        : Code for freertos applications
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2023 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under Ultimate Liberty license
+  * SLA0044, the "License"; You may not use this file except in compliance with
+  * the License. You may obtain a copy of the License at:
+  *                             www.st.com/SLA0044
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+/* Includes ------------------------------------------------------------------*/
+#include "FreeRTOS.h"
+#include "task.h"
+#include "main.h"
+#include "cmsis_os.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdbool.h>
+#include <time.h>
+#include "timers.h"
+#include "event_groups.h"
+#include "queue.h"
+#include "semphr.h"
+#include "i2c.h"
+#include "usart.h"
+#include "gpio.h"
+#include "lcd.h"
+#include "ads1115.h"
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+#define ADC_BIT (1 << 0)
+#define ADS_BIT (1 << 1)
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+/* USER CODE BEGIN Variables */
+xTaskHandle lcdTaskHandle;
+xTaskHandle sensorTaskHandle;
+xQueueHandle sensorQueueHandle;
+EventGroupHandle_t evGroupHandle;
+SemaphoreHandle_t i2cSemphrHandle;
+extern ADC_HandleTypeDef hadc1;
+
+typedef struct {
+	double lm35_adc;
+	double lm35_ads;
+	uint32_t cnt;
+} sensorHandle_t;
+
+/* USER CODE END Variables */
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
+/* Private function prototypes -----------------------------------------------*/
+/* USER CODE BEGIN FunctionPrototypes */
+void lcd_task(void *param);
+void sensor_task(void *param);
+/* USER CODE END FunctionPrototypes */
+
+void StartDefaultTask(void *argument);
+
+void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+
+/**
+  * @brief  FreeRTOS initialization
+  * @param  None
+  * @retval None
+  */
+void MX_FREERTOS_Init(void) {
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+	i2cSemphrHandle = xSemaphoreCreateMutex();
+	if (i2cSemphrHandle == NULL)
+	{
+
+	}
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
+
+  /* Create the thread(s) */
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+	xTaskCreate(&lcd_task, "LCD", 256, NULL, 3, &lcdTaskHandle);
+	xTaskCreate(&sensor_task, "SENSOR", 256, NULL, 2, &sensorTaskHandle);
+  /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_EVENTS */
+  /* add events, ... */
+	evGroupHandle = xEventGroupCreate();
+	if (evGroupHandle == NULL)
+	{
+
+	}
+  /* USER CODE END RTOS_EVENTS */
+
+}
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN StartDefaultTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartDefaultTask */
+}
+
+/* Private application code --------------------------------------------------*/
+/* USER CODE BEGIN Application */
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+	if (hadc->Instance == ADC1)
+	{
+		xEventGroupSetBitsFromISR(evGroupHandle, ADC_BIT, &xHigherPriorityTaskWoken);
+	}
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+	if (GPIO_Pin == GPIO_PIN_12)
+	{
+		xEventGroupSetBitsFromISR(evGroupHandle, ADS_BIT, &xHigherPriorityTaskWoken);
+	}
+}
+
+void lcd_task(void *param)
+{
+	lcd_init();
+	lcd_clear();
+	while(1)
+	{
+		lcd_clear();
+		lcd_send_cmd(0x80 | 0x00);
+		lcd_send_string((char *)"Thanh ngu");
+		lcd_send_cmd(0x80 | 0x40);
+		lcd_send_string((char *)"Dung gioi");
+		vTaskDelay(1000 / portTICK_RATE_MS);
+	}
+}
+
+void sensor_task(void *param)
+{
+	TickType_t wakeTick = xTaskGetTickCount();
+	sensorHandle_t sensor;
+	EventBits_t ev_bit;
+	uint8_t data_ads[3] = {0};
+	ads_init();
+	while(1)
+	{
+		HAL_ADC_Start_IT(&hadc1);
+//		ads_start_conv();
+		ev_bit = xEventGroupWaitBits(evGroupHandle, ADC_BIT | ADS_BIT, pdTRUE, pdTRUE, 100 / portTICK_RATE_MS);
+		if (ev_bit & ADC_BIT)
+			sensor.lm35_adc = (double)HAL_ADC_GetValue(&hadc1) * 100 * 3.3 / 4095 ;
+		else
+			sensor.lm35_adc = -1;
+		if (ev_bit & ADS_BIT)
+		{
+			memset((char *)data_ads, '\0', strlen((char *)data_ads));
+			ads_read(ADS1115_CONVERSION_REG, data_ads);
+			sensor.lm35_ads = ((double)((((uint16_t)data_ads[0] << 8) & 0xFF00) | ((uint16_t)data_ads[1] & 0x00FF)) * 1.024 / 32767) * 100;
+		}
+		else
+			sensor.lm35_ads = -1;
+		++sensor.cnt;
+		vTaskDelayUntil(&wakeTick, 1000 / portTICK_RATE_MS);
+	}
+}
+/* USER CODE END Application */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,0 +1,12 @@
+../Core/Src/freertos.c:141:6:reverse	32	static
+../Core/Src/freertos.c:154:5:intToStr	32	static
+../Core/Src/freertos.c:174:6:ftoa	48	static
+../Core/Src/freertos.c:187:6:LOG	120	static
+../Core/Src/freertos.c:204:6:MX_FREERTOS_Init	16	static
+../Core/Src/freertos.c:259:6:StartDefaultTask	16	static
+../Core/Src/freertos.c:272:6:HAL_ADC_ConvCpltCallback	24	static
+../Core/Src/freertos.c:281:6:HAL_GPIO_EXTI_Callback	24	static
+../Core/Src/freertos.c:302:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/freertos.c:328:6:lcd_task	72	static
+../Core/Src/freertos.c:397:6:sensor_task	40	static
+../Core/Src/freertos.c:440:6:general_task	48	static
