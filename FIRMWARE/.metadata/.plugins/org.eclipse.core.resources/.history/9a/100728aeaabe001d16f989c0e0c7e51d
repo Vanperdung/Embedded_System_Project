@@ -319,7 +319,7 @@ void sensor_task(void *param)
 	BaseType_t xGenRet;
 	double dbSensorStm;
 	double dbSensorAds;
-	double dbVal[2] = {1000.0, 25.0};
+	double dbVal[2];
 	ads_init();
 	while (1)
 	{
@@ -458,7 +458,6 @@ void general_task(void *param)
 			xQueueSend(genlcdQueueHandle, &generalTest, 0 / portTICK_RATE_MS);
 			xQueueOverwrite(gensenQueueHandle, &generalTest);
 		}
-
 		if (ucRxFlag == END_BYTE)
 		{
 			LOG(TAG, (char *)ucRxBuffer);
@@ -495,18 +494,12 @@ void lcd_task(void *param)
 {
 	char cVal[2][20];
 	TickType_t xWakeTick = xTaskGetTickCount();
-	generalTestHandle_t generalTest = {
-			.bCfg = false,
-			.ucCursor = 0,
-			.ucPage = 0,
-			.dbVal[0] = 1000,
-			.dbVal[1] = 25.0,
-	};
+	lcd_init();
+	lcd_clear();
+	generalTestHandle_t generalTest;
 	sensorTestHandle_t sensorTest;
 	BaseType_t xGenRet;
 	BaseType_t xSenRet;
-	lcd_init();
-	lcd_clear();
 	while(1)
 	{
 		xGenRet = xQueueReceive(genlcdQueueHandle, &generalTest, 0 / portTICK_RATE_MS);

@@ -314,7 +314,6 @@ void sensor_task(void *param)
 	TickType_t xWakeTick = xTaskGetTickCount();
 	EventBits_t xEvBit;
 	uint8_t ucDataAds[3] = {0};
-	generalTestHandle_t generalTest;
 	sensorTestHandle_t sensorTest;
 	BaseType_t xGenRet;
 	double dbSensorStm;
