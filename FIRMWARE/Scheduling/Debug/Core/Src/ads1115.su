@@ -1,0 +1,4 @@
+../Core/Src/ads1115.c:21:6:ads_write	40	static
+../Core/Src/ads1115.c:31:6:ads_read	24	static
+../Core/Src/ads1115.c:39:6:ads_init	16	static
+../Core/Src/ads1115.c:45:6:ads_start_conv	16	static
