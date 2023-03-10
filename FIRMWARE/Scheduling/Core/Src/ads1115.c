@@ -24,16 +24,13 @@ void ads_write(uint8_t reg_addr, uint8_t *data_send, int len)
 	data[0] = reg_addr;
 	memcpy((char *)&data[1], (char *)data_send, len);
 	HAL_I2C_Master_Transmit(&hi2c2, SLAVE_ADDRESS_ADS1115, data, strlen((char *)data), 1000);
-//	xSemaphoreGive(i2cSemphrHandle);
 	free(data);
 }
 
 void ads_read(uint8_t reg_addr, uint8_t *data_read)
 {
-//	xSemaphoreTake(i2cSemphrHandle, portMAX_DELAY);
 	HAL_I2C_Master_Transmit(&hi2c2, SLAVE_ADDRESS_ADS1115, &reg_addr, 1, 1000);
 	HAL_I2C_Master_Receive(&hi2c2, SLAVE_ADDRESS_ADS1115, data_read, 2, 1000);
-//	xSemaphoreGive(i2cSemphrHandle);
 }
 
 void ads_init(void)
@@ -51,6 +48,5 @@ void ads_start_conv(void)
 		data_read[0] |= 0x80;
 		ads_write(ADS1115_CONFIG_REG, data_read, 2);
 	}
-//	vTaskDelay(1 / portTICK_RATE_MS);
 	HAL_Delay(1);
 }
