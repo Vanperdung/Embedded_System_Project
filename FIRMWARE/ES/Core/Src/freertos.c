@@ -56,6 +56,7 @@
 #define BUT1_BIT (1 << 2)
 #define BUT2_BIT (1 << 3)
 #define BUT3_BIT (1 << 4)
+#define UART_BIT (1 << 5)
 #define START_BYTE 1
 #define END_BYTE 2
 #define ERROR_FRAME 3
@@ -285,6 +286,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 	if(ucRxData == '$')
 	{
 		memset((char *)ucRxBuffer, 0, strlen((char *)ucRxBuffer));
@@ -296,7 +298,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	{
 		ucRxBuffer[++ucRxCnt] = ucRxData;
 		if (ucRxData == '*')
-			ucRxFlag = END_BYTE;
+			xEventGroupSetBitsFromISR(evGroupHandle, UART_BIT, &xHigherPriorityTaskWoken);
 		else
 			HAL_UART_Receive_IT(&huart2, &ucRxData, 1);
 	}
@@ -375,16 +377,18 @@ void general_task(void *param)
 			.dbVal[1] = 25.0,
 	};
 	EventBits_t xEvBit;
-	TickType_t xWakeTick = xTaskGetTickCount();
 	uartCfgHandle_t uartCfg = {0};
+	ftoa(generalTest.dbVal[0] / 1000, (char *)generalTest.ucVal[0], 2);
+	ftoa(generalTest.dbVal[1], (char *)generalTest.ucVal[1], 2);
+	HAL_UART_Receive_IT(&huart2, &ucRxData, 1);
 	while (1)
 	{
-		xEvBit = xEventGroupWaitBits(evGroupHandle, BUT0_BIT | BUT1_BIT | BUT2_BIT | BUT3_BIT, pdTRUE, pdFALSE, 0 / portTICK_RATE_MS);
+		xEvBit = xEventGroupWaitBits(evGroupHandle, BUT0_BIT | BUT1_BIT | BUT2_BIT | BUT3_BIT | UART_BIT, pdTRUE, pdFALSE, portMAX_DELAY / portTICK_RATE_MS);
 		if (xEvBit & BUT0_BIT)
 		{
-				generalTest.bCfg = false;
-				generalTest.ucCursor = 0;
-				generalTest.ucPage = 1 - generalTest.ucPage;
+			generalTest.bCfg = false;
+			generalTest.ucCursor = 0;
+			generalTest.ucPage = 1 - generalTest.ucPage;
 		}
 		else if (xEvBit & BUT1_BIT)
 		{
@@ -453,13 +457,7 @@ void general_task(void *param)
 				generalTest.bCfg = !generalTest.bCfg;
 			}
 		}
-		if (xEvBit & 0x1E)
-		{
-			xQueueSend(genlcdQueueHandle, &generalTest, 0 / portTICK_RATE_MS);
-			xQueueOverwrite(gensenQueueHandle, &generalTest);
-		}
-
-		if (ucRxFlag == END_BYTE)
+		else if (xEvBit & UART_BIT)
 		{
 			LOG(TAG, (char *)ucRxBuffer);
 			sscanf((char *)ucRxBuffer, "$,%c,%s,*", (char *)&uartCfg.ucType, (char *)uartCfg.ucVal);
@@ -481,13 +479,15 @@ void general_task(void *param)
 					generalTest.dbVal[1] = 1;
 				ftoa(generalTest.dbVal[1], (char *)generalTest.ucVal[1], 1);
 			}
-			xQueueSend(genlcdQueueHandle, &generalTest, 0 / portTICK_RATE_MS);
-			xQueueOverwrite(gensenQueueHandle, &generalTest);
 			ucRxCnt = 0;
 			ucRxFlag = START_BYTE;
 			HAL_UART_Receive_IT(&huart2, &ucRxData, 1);
 		}
-		vTaskDelayUntil(&xWakeTick, 50 / portTICK_RATE_MS);
+		if (xEvBit & 0x3E)
+		{
+			xQueueSend(genlcdQueueHandle, &generalTest, 0 / portTICK_RATE_MS);
+			xQueueOverwrite(gensenQueueHandle, &generalTest);
+		}
 	}
 }
 
@@ -507,6 +507,8 @@ void lcd_task(void *param)
 	BaseType_t xSenRet;
 	lcd_init();
 	lcd_clear();
+	ftoa(generalTest.dbVal[0] / 1000, (char *)generalTest.ucVal[0], 2);
+	ftoa(generalTest.dbVal[1], (char *)generalTest.ucVal[1], 2);
 	while(1)
 	{
 		xGenRet = xQueueReceive(genlcdQueueHandle, &generalTest, 0 / portTICK_RATE_MS);

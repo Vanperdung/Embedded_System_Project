@@ -64,8 +64,8 @@ all: main-build
 main-build: ES.elf secondary-outputs
 
 # Tool invocations
-ES.elf ES.map: $(OBJS) $(USER_OBJS) D:\Embedded_System_Project\FIRMWARE\ES\STM32F103RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "ES.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\Embedded_System_Project\FIRMWARE\ES\STM32F103RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ES.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+ES.elf ES.map: $(OBJS) $(USER_OBJS) D:\HUST\Junior\2022-1\TKHTN\new_version\Embedded_System_Project\FIRMWARE\ES\STM32F103RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "ES.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\HUST\Junior\2022-1\TKHTN\new_version\Embedded_System_Project\FIRMWARE\ES\STM32F103RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ES.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
